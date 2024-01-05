@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flash Warning!!!</title>
+    <style>
+      body:not(#textForm):not(#divA) {
+        position: relative;
+        margin: -6em;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+      }
+      p {
+        position: absolute;
+        font-size: 1em;
+        transition: font-size 0.03s ease-in-out;
+      }
+      #divv {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      #textForm {
+        display: flex;
+        font-size: 3em;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px,
+          rgb(51, 51, 51) 0px 0px 0px 3px;
+        border-radius: 20px;
+        padding: 20px;
+        color: black;
+        display: flex;
+      }
+
+      #textForm input {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="divv">
+      <form id="textForm">
+        <label for="textInput">Type the sentence:</label>
+        <br />
+        <input type="text" id="textInput" name="textInput" autocomplete="off" required/>
+        <br />
+        <button type="submit" id="btn">Send Text</button>
+      </form>
+    </div>
+    <script>
+      const form = document.getElementById("textForm");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        alertB();
+      });
+      function enterFullscreen() {
+            const element = document.documentElement;
+
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+      function alertB() {
+        function oneS() {
+          alert("Do you want to continue?");
+        }
+        setTimeout(oneS, 20);
+        const divv = document.getElementById("divv");
+        divv.style.display = "none";
+        var container = document.createElement("div");
+        container.id = "divA";
+        container.style.position = "fixed";
+        container.style.top = "50%";
+        container.style.left = "50%";
+        container.style.transform = "translate(-50%, -50%)";
+        container.style.background = "#fff";
+        container.style.padding = "25px";
+
+        container.style.border = "1px solid #000";
+        container.style.zIndex = "1000";
+
+        var yesButton = document.createElement("button");
+        yesButton.textContent = "Yes";
+        yesButton.style.marginRight = "30px";
+        yesButton.style.cursor = "pointer";
+        yesButton.addEventListener("click", function () {
+          var userDecision = window.confirm("Last Chance! FLASH WARNING!!!");
+          if (userDecision) {
+            enterFullscreen();
+            start();
+          } else {
+            alert("Good Decision");
+          }
+          document.body.removeChild(container);
+        });
+
+        var noButton = document.createElement("button");
+        noButton.textContent = "No";
+        noButton.style.cursor = "pointer";
+        noButton.addEventListener("click", function () {
+          alert("Good Decision");
+          document.body.removeChild(container);
+        });
+
+        container.appendChild(yesButton);
+        container.appendChild(noButton);
+        document.body.appendChild(container);
+      }
+
+      function start() {
+        const fontSizes = [0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const numParagraphs = 11;
+
+        const inputText = document.getElementById("textInput").value;
+
+        function createParagraph(id) {
+          const pTag = document.createElement("p");
+          pTag.id = `changingText${id}`;
+          pTag.innerHTML = inputText;
+          document.body.appendChild(pTag);
+        }
+
+        for (let i = 1; i <= numParagraphs; i++) {
+          createParagraph(i);
+        }
+
+        function changeBackgroundColor() {
+          const randomColor = `rgb(${Math.floor(
+            Math.random() * 256
+          )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+            Math.random() * 256
+          )})`;
+
+          document.body.style.backgroundColor = randomColor;
+        }
+
+        setInterval(changeBackgroundColor, 10);
+
+        function changeFontSizeAndPosition() {
+          for (const id of Array.from(
+            { length: numParagraphs },
+            (_, i) => i + 1
+          )) {
+            const randomIndex = Math.floor(Math.random() * fontSizes.length);
+            const randomFontSize = fontSizes[randomIndex];
+
+            const randomTop = Math.floor(Math.random() * window.innerHeight);
+            const randomLeft = Math.floor(Math.random() * window.innerWidth);
+
+            const pTag = document.getElementById(`changingText${id}`);
+            pTag.style.fontSize = `${randomFontSize}em`;
+            pTag.style.top = `${randomTop}px`;
+            pTag.style.left = `${randomLeft}px`;
+          }
+        }
+
+        setInterval(changeFontSizeAndPosition, 10);
+      }
+    </script>
+  </body>
+</html>
